@@ -27,12 +27,12 @@ const SlugPage = ({ id, date, time, name, image, performers, description, venue,
           </div>
   
           <span>
-            {date} at {time}
+            {new Date(date).toLocaleDateString('en-US')} at {time}
           </span>
           <h1>{name}</h1>
           {image && (
             <div className={styles.image}>
-              <Image src={image} width={960} height={600} />
+              <Image src={image.formats.medium.url} width={960} height={600} />
             </div>
           )}
   
@@ -62,7 +62,7 @@ export default SlugPage;
 // };
 
 export const getStaticPaths = async () => {
-  const events = await (await fetch(`${API_URL}/api/events`)).json();
+  const events = await (await fetch(`${API_URL}/events`)).json();
   const paths = events.map(evt => ({ params: { slug: evt.slug } }));
 
   return {
@@ -72,10 +72,10 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params: { slug }}) => {
-  const evt = await (await fetch(`${API_URL}/api/events/${slug}`)).json();
+  const evt = await (await fetch(`${API_URL}/events?slug=${slug}`)).json();
 
   return {
-    props: { ...evt },
+    props: { ...evt[0] },
     revalidate: 1
   }
 };

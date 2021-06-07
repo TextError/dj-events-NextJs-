@@ -16,10 +16,10 @@ const Home = ({ events }) => (
 export default Home;
 
 export const getStaticProps = async () => {
-  const events = await (await fetch(`${API_URL}/api/events`)).json();
+  const events = await (await fetch(`${API_URL}/events?_sort=date:ASC&_limit=3`)).json();
 
   return {
-    props: { events: events.slice(0, 3) },
+    props: { events },
     revalidate: 1
   }
 };
