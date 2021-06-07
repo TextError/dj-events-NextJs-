@@ -1,7 +1,8 @@
-import Layout from "@/layout/Layout";
 import Link from 'next/link';
 import { API_URL } from "@/config/index";
-import EventItem from "components/home/EventItem";
+
+import Layout from "@/layout/Layout";
+import EventItem from "@/components/events/EventItem";
 
 const Home = ({ events }) => (
   <Layout>

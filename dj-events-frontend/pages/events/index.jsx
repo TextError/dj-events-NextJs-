@@ -1,7 +1,7 @@
 import { API_URL } from "@/config/index";
 import Layout from "@/layout/Layout";
 
-import EventItem from "components/home/EventItem";
+import EventItem from "@/components/events/EventItem";
 
 const EventPage = ({ events }) => (
   <Layout title='Add new Event'>

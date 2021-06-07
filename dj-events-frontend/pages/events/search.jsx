@@ -1,10 +1,10 @@
 import qs from 'qs';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { API_URL } from "@/config/index";
-import Layout from "@/layout/Layout";
 
-import EventItem from "components/home/EventItem";
+import EventItem from "@/components/events/EventItem";
+import Layout from "@/layout/Layout";
 
 const SearchPage = ({ events }) => {
   const { query: { term }} = useRouter();
