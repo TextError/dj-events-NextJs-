@@ -16,7 +16,7 @@ const Register = () => {
   const { register, error } = useContext(AuthContext);
 
   useEffect(() => {
-    toast(error);
+    toast.error(error);
     return;
   },[error])
 

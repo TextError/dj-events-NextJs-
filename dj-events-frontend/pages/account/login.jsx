@@ -16,7 +16,7 @@ const Login = () => {
   const { signIn, error } = useContext(AuthContext);
 
   useEffect(() => {
-    toast(error);
+    toast.error(error);
     return;
   },[error])
 
