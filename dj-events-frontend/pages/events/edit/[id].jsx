@@ -8,6 +8,7 @@ import { API_URL } from '@/config/index';
 import Layout from "@/layout/Layout";
 import { FaImage } from 'react-icons/fa';
 import Modal from '@/components/events/Modal';
+import Upload from '@/components/events/Upload';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +23,12 @@ const EditEvent = (event) => {
   const { push } = useRouter();
 
   const onChange = ({ target: { name, value }}) => setState({ ...state, [name]: value });
+
+  const onUpload = async () => {
+    const res = await (await fetch(`${API_URL}/events/${event.id}`)).json();
+    setImage(res.image.formats.thumbnail.url);
+    setModal(false);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +89,9 @@ const EditEvent = (event) => {
       { image && <Image src={image} height={100} width={170} /> }
       { !image && <div><p>No Image uploaded</p></div> }
       <div><button onClick={() => setModal(true)} className="btn-secondary"><FaImage /> Set Image</button></div>
-      <Modal show={modal} onClose={() => setModal(false)}>Image Upload</Modal>
+      <Modal show={modal} onClose={() => setModal(false)}>
+        <Upload id={event.id} onUpload={onUpload} />
+      </Modal>
     </Layout>
   )
 };
