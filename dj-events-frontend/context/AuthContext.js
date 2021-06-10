@@ -7,6 +7,12 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null);
+  const { push } = useRouter();
+
+  useEffect(() => {
+    checkIfUser();
+    push('/account/dashboard');
+  },[]);
 
   // Register User
   const register = async ({ username, email, password }) => {
@@ -38,7 +44,10 @@ export const AuthProvider = ({ children }) => {
 
   // Check User
   const checkIfUser = async ({ username, email, password }) => {
-
+    const res = await fetch(`${NEXT_URL}/api/user`);
+    const data = await res.json();
+    if(res.ok) return setUser(data.user);
+    setUser(null);
   };
 
   return (
