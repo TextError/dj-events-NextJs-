@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
+import AuthContext from '@/context/AuthContext';
 
 import Layout from '@/layout/Layout';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,11 +13,18 @@ const Login = () => {
   const [state, setState] = useState({ email: '', password: '' });
   const { email, password } = state;
 
+  const { signIn, error } = useContext(AuthContext);
+
+  useEffect(() => {
+    toast(error);
+    return;
+  },[error])
+
   const onChange = ({ target: { name, value }}) => setState({ ...state, [name]: value });
 
   const onSubmit = (e) => {
     e.preventDefault()
-
+    signIn({ email, password });
   };
 
   return (

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
+import AuthContext from '@/context/AuthContext';
 
 import Layout from '@/layout/Layout';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,12 +13,20 @@ const Register = () => {
   const [state, setState] = useState({ username: '', email: '', password: '', password2: '' });
   const { username, email, password, password2 } = state;
 
+  const { register, error } = useContext(AuthContext);
+
+  useEffect(() => {
+    toast(error);
+    return;
+  },[error])
+
   const onChange = ({ target: { name, value }}) => setState({ ...state, [name]: value });
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     if(password !== password2) return toast('Passwords do not match!');
+    register({ username, email, password });
   };
 
   return (
