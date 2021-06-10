@@ -5,8 +5,9 @@ import Image from 'next/image';
 import moment from 'moment';
 import { API_URL } from '@/config/index';
 
-import { FaImage } from 'react-icons/fa';
 import Layout from "@/layout/Layout";
+import { FaImage } from 'react-icons/fa';
+import Modal from '@/components/events/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +16,7 @@ import styles from '@/styles/Form.module.css';
 const EditEvent = (event) => {
   const [state, setState] = useState({ name: event.name, performers: event.performers, venue: event.venue, address: event.address, date: event.date, time: event.time, description: event.description });
   const [image, setImage] = useState(event.image ? event.image.formats.thumbnail.url : null);
+  const [modal, setModal] = useState(false);
 
   const { name, performers, venue, address, date, time, description } = state;
   const { push } = useRouter();
@@ -79,7 +81,8 @@ const EditEvent = (event) => {
       <h2>Event Image</h2>
       { image && <Image src={image} height={100} width={170} /> }
       { !image && <div><p>No Image uploaded</p></div> }
-      <div><button className="btn-secondary"><FaImage /> Set Image</button></div>
+      <div><button onClick={() => setModal(true)} className="btn-secondary"><FaImage /> Set Image</button></div>
+      <Modal show={modal} onClose={() => setModal(false)}>Image Upload</Modal>
     </Layout>
   )
 };
