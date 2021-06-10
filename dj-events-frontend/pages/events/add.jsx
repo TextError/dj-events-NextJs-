@@ -4,26 +4,41 @@ import Link from 'next/link';
 import { API_URL } from '@/config/index';
 
 import Layout from "@/layout/Layout";
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 import styles from '@/styles/Form.module.css';
 
 const Add = () => {
   const [state, setState] = useState({ name: '', performers: '', venue: '', address: '', date: '', time: '', description: '' });
 
   const { name, performers, venue, address, date, time, description } = state;
-  const {} = useRouter();
+  const { push } = useRouter();
 
   const onChange = ({ target: { name, value }}) => setState({ ...state, [name]: value });
 
-  const onSubmit = e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    const isEmpty = Object.values(state).some(el => el === '');
+    if(isEmpty) return toast.error('Please fill all the fields!');
 
+    const res = await fetch(`${API_URL}/events`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state)
+    });
+
+    if(!res.ok) return toast.error('Something went wrong!');
+
+    const evt = await res.json();
+    push(`/events/${evt.slug}`);
   };
 
   return (
     <Layout title='Add New Event'>
       <Link href='/events'>Go Back</Link>
       <h1>Add Event</h1>
+      <ToastContainer />
       <form onSubmit={onSubmit} className={styles.form} noValidate>
         <div className={styles.grid}>
             <div>
