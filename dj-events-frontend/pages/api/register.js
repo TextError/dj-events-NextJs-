@@ -9,7 +9,7 @@ export default async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
-    })
+    });
 
     const { jwt, user, message } = await strapiRes.json();
     
@@ -24,7 +24,7 @@ export default async (req, res) => {
 
       res.status(200).json({ user });
     } else {
-      res.status(strapiRes.statusCode).json({ message: message[0].messages[0].message })
+      res.status(strapiRes.status).json({ message: message[0].messages[0].message })
     }
 
   } else {

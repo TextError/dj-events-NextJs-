@@ -17,15 +17,15 @@ export const AuthProvider = ({ children }) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
-    })
+    });
 
-    const data = await res.json();
+    const { user, message } = await res.json();
 
     if(res.ok) {
-      setUser(data.user);
+      setUser(user);
       push('/account/dashboard');
     } else {
-      setError(data.message);
+      setError(message);
       setError(null);
     }
   };
