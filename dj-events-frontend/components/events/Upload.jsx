@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { API_URL } from '@/config/index'
 import styles from '@/styles/Form.module.css'
 
-const Upload = ({ id, onUpload }) => {
+const Upload = ({ id, onUpload, token }) => {
   const [image, setImage] = useState(null)
 
   const onSubmit = async (e) => {
@@ -16,6 +16,7 @@ const Upload = ({ id, onUpload }) => {
     const res = await fetch(`${API_URL}/upload`, {
       method: 'POST',
       body: formData,
+      headers: { Authorization: `Bearer ${token}` }
     })
 
     if (res.ok) {

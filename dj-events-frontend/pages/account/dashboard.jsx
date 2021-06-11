@@ -7,12 +7,21 @@ import Event from '@/components/dashboard/Event';
 import Layout from '@/layout/Layout';
 import styles from '@/styles/Dashboard.module.css'
 
-const Dashboard = ({ events }) => {
+const Dashboard = ({ events, token }) => {
 
-  const { } = useRouter();
+  const { reload } = useRouter();
 
   const onDelete = async (id) => {
+    if (confirm('Are you sure?')) {
+      const res = await fetch(`${API_URL}/events/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}`},
+      })
+      const { message } = await res.json();
 
+      if (!res.ok) return toast.error(message);
+      reload();
+    }
   };
 
   return (

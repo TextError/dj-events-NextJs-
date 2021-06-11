@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { parseCookie } from 'utils';
 import { API_URL } from '@/config/index';
 
 import Layout from "@/layout/Layout";
@@ -9,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '@/styles/Form.module.css';
 
-const Add = () => {
+const Add = ({ token }) => {
   const [state, setState] = useState({ name: '', performers: '', venue: '', address: '', date: '', time: '', description: '' });
 
   const { name, performers, venue, address, date, time, description } = state;
@@ -24,7 +25,10 @@ const Add = () => {
 
     const res = await fetch(`${API_URL}/events`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify(state)
     });
 
@@ -77,3 +81,11 @@ const Add = () => {
 }
 
 export default Add;
+
+export const getServerSideProps = async ({ req }) => {
+  const { token } = parseCookie(req);
+
+  return {
+    props: { token }
+  }
+}

@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '@/styles/Form.module.css';
 
-const EditEvent = (event) => {
+const EditEvent = ({ event, token }) => {
   const [state, setState] = useState({ name: event.name, performers: event.performers, venue: event.venue, address: event.address, date: event.date, time: event.time, description: event.description });
   const [image, setImage] = useState(event.image ? event.image.formats.thumbnail.url : null);
   const [modal, setModal] = useState(false);
@@ -37,7 +37,10 @@ const EditEvent = (event) => {
 
     const res = await fetch(`${API_URL}/events/${event.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify(state)
     });
 
@@ -90,17 +93,18 @@ const EditEvent = (event) => {
       { !image && <div><p>No Image uploaded</p></div> }
       <div><button onClick={() => setModal(true)} className="btn-secondary"><FaImage /> Set Image</button></div>
       <Modal show={modal} onClose={() => setModal(false)}>
-        <Upload id={event.id} onUpload={onUpload} />
+        <Upload id={event.id} token={token} onUpload={onUpload} />
       </Modal>
     </Layout>
   )
 };
 
-export async function getServerSideProps({ params: { id } }) {
-  const evt = await( await fetch(`${API_URL}/events/${id}`)).json();
+export const getServerSideProps = async ({ params: { id }, req }) => {
+  const event = await( await fetch(`${API_URL}/events/${id}`)).json();
+  const { token } = parseCookie(req);
 
   return {
-    props: { ...evt }
+    props: { event, token }
   }
 } 
 
