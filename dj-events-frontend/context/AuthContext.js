@@ -9,41 +9,60 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const { push } = useRouter();
 
-  useEffect(() => {
-    checkIfUser();
-    push('/account/dashboard');
-  },[]);
+  // useEffect(() => { checkIfUser() },[]);
 
   // Register User
   const register = async ({ username, email, password }) => {
+    const res = await fetch(`${NEXT_URL}/api/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password })
+    })
 
+    const data = await res.json();
+
+    if(res.ok) {
+      setUser(data.user);
+      push('/account/dashboard');
+    } else {
+      setError(data.message);
+      setError(null);
+    }
   };
 
   // Login User
   const signIn = async ({ email: identifier, password }) => {
-    const res = await (await fetch(`${NEXT_URL}/api/signIn`, {
+    const res = await fetch(`${NEXT_URL}/api/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ identifier, password })
-    })).json();
+    });
+
+    const { user, message} = await res.json();
 
     if(res.ok) {
-      setUser(res.user)
+      setUser(user);
+      push('/account/dashboard');
     } else {
-      setError(res.message)
+      setError(message);
       setError(null);
     }
-
-
   };
 
   // Logout User
   const signOut = async () => {
+    const res = await fetch(`${NEXT_URL}/api/signOut`, {
+      method: 'POST'
+    });
 
+    if(res.ok) {
+      setUser(null);
+      push('/');
+    }
   };
 
   // Check User
-  const checkIfUser = async ({ username, email, password }) => {
+  const checkIfUser = async () => {
     const res = await fetch(`${NEXT_URL}/api/user`);
     const data = await res.json();
     if(res.ok) return setUser(data.user);
