@@ -5,16 +5,15 @@ export default async (req, res) => {
   if(req.method === 'GET') {
     if(!req.headers.cookie) return res.status(403).json({ message: 'Not Authorized' });
     const { token } = cookie.parse(req.headers.cookie);
-
-    const strapiRes = await fetch(`${API_URL}/user/me`, {
+    
+    const strapiRes = await fetch(`${API_URL}/users/me`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` }
     });
-
     const user = await strapiRes.json();
 
-    if(strapiRes.ok) return res.state(403).json({ message: 'User forbidden' });
-    else return res.state(200).json({ user })
+    if(strapiRes.ok) return res.status(200).json({ user });
+    res.status(403).json({ message: 'User forbidden' });
 
   } else {
     res.setHeader('Allow', ['GET']);

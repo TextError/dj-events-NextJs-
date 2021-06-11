@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const { push } = useRouter();
 
-  // useEffect(() => { checkIfUser() },[]);
+  useEffect(() => { checkIfUser() },[]);
 
   // Register User
   const register = async ({ username, email, password }) => {
@@ -64,8 +64,9 @@ export const AuthProvider = ({ children }) => {
   // Check User
   const checkIfUser = async () => {
     const res = await fetch(`${NEXT_URL}/api/user`);
-    const data = await res.json();
-    if(res.ok) return setUser(data.user);
+    const { user } = await res.json();
+
+    if(res.ok) return setUser(user);
     setUser(null);
   };
 
