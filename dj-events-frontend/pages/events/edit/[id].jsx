@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import moment from 'moment';
 import { API_URL } from '@/config/index';
+import { parseCookie } from '@/utils/index';
 
 import Layout from "@/layout/Layout";
 import { FaImage } from 'react-icons/fa';

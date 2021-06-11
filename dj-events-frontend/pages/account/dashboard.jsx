@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { API_URL } from '@/config/index';
-import { parseCookie } from '../../utils/index';
+import { parseCookie } from '@/utils/index';
 
 import Event from '@/components/dashboard/Event';
 
