@@ -23,7 +23,7 @@ const Header = () => {
             <>
               <li><Link href='/account/dashboard'>Dashboard</Link></li>
               <li><Link href='/events/add'>Add events</Link></li>
-              <li onClick={() => signOut()}><FaSignOutAlt />Sign-out</li>
+              <li className='btn-secondary btn-icon' onClick={() => signOut()}><FaSignOutAlt />Sign-out</li>
             </>
           }
           { !user && <li><Link href='/account/login'><a className='btn-secondary btn-icon'><FaSignInAlt />Sign-in</a></Link></li> }
