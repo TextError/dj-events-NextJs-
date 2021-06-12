@@ -7,6 +7,7 @@ import Layout from "@/layout/Layout";
 import 'react-toastify/dist/ReactToastify.css';
 
 import styles from '@/styles/Event.module.css';
+import Map from '@/components/events/Map';
 
 const SlugPage = ({ date, time, name, image, performers, description, venue, address }) => (
   <Layout>
@@ -27,6 +28,8 @@ const SlugPage = ({ date, time, name, image, performers, description, venue, add
       <p>{description}</p>
       <h3>Venue: {venue}</h3>
       <p>{address}</p>
+
+      <Map address={address} />
 
       <Link href='/events'>
         <a className={styles.back}>{'<'} Go Back</a>
